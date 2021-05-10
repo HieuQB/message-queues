@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package consuming;
+
+option go_package = "consuming";
+
+service ConsumingService {
+	rpc Consume(ConsumeRequest) returns (ConsumeResponse) {}
+}
+
+// Message send to service when event occurs
+message ConsumeRequest {
+	string id = 1;
+	string topic = 2; // event name
+	bytes body = 3; // event payload
+}
+
+message ConsumeResponse {
+	// we still don't support response yet
+}

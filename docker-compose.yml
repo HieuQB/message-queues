@@ -1,0 +1,26 @@
+version: "3"
+services:
+  ms-consumer:
+    image: golang:1.14
+    command: ["go", "run", "main.go"]
+    working_dir: /ms-consumer
+    restart: always
+    volumes:
+      - .:/ms-consumer
+      - shared_gopath:/gopath
+    environment:
+      HTTP_PORT: 80
+      GOPATH: /gopath
+    ports:
+      - 8123:80
+    networks:
+      - finan_network
+
+volumes:
+  # use a shared gopath, avoid re-download module each go running
+  shared_gopath: {}
+
+networks:
+  finan_network:
+    external:
+      name: finan_network

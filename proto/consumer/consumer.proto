@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package consumer;
+
+option go_package = "consumer";
+
+message PublishEventRequest {
+    string topic = 1;
+    string body = 2;
+    string message_id = 3;
+}
+
+message PublishEventResponse {
+    string message_id = 2;
+}
+
+service Consumer {
+    rpc PublishEvent(PublishEventRequest) returns (PublishEventResponse) {}
+}

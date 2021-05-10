@@ -1,0 +1,18 @@
+image: "kroniak/ssh-client"
+
+stages:
+  - develop
+  - staging
+  - production
+
+deploy_testing:
+  stage: develop
+  script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY_TESTING")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh -tt ubuntu@$TESTING_HOST "cd finan/ms-consumer/ && git pull && docker-compose up --build --force-recreate -d"
+  only:
+    - develop

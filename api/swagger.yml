@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: Consumer API
+  description: >-
+    In mainly, this helps deliver event messages to target services via registered http endpoint.
+    Although you can specify any endpoint, good convention is `POST /consume`.
+  contact:
+    email: phuonghuynh.net@gmail.com
+  version: 1.0.0
+servers:
+  - url: 'https://api-stg-cen.jx.com.vn'
+    description: Development server
+  - url: 'http://consumer'
+    description: Internal network
+tags:
+  - name: service
+    description: Service general
+  - name: event
+    description: Events publishing
+paths:
+  /consumer:
+    get:
+      tags: [service]
+      summary: Health check endpoint
+      operationId: getHealthcheck
+      responses:
+        '200':
+          $ref: '#/components/responses/healthCheckResponse'
+
+  /events:
+    post:
+      tags: [event]
+      summary: Publish an event to broker (INTERNAL URL)
+      operationId: publishEvent
+      requestBody:
+        $ref: '#/components/requestBodies/publishEventRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/publishEventResponse'
+        '400':
+          description: bad request. There were some invalid supplied data, please check client data
+
+components:
+  schemas:
+
+    event:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: |-
+            describes topic to send event. You can think it's event name. Example, when an user updated his profile,
+            user service could publish event like:
+
+            ```json
+            {
+              "topic": "user.profile_updated",
+              "body": JSON_SERIALIZED_BODY
+            }
+            ```
+        body:
+          type: string
+          description: |-
+            a JSON serialized string, that describes detail data of event. Continue with above example, user.profile_updated event
+
+            ```json
+            {
+              "id": "f1722184-839b-4b46-9032-1b326088a499"
+              "name": "changed name",
+
+              "original": {
+                "description": "this is data before updating",
+                "name": "original name"
+              }
+            }
+            ```
+        message_id:
+          type: string
+          format: uuid
+          description: ID of message, helpful in tracing
+
+  requestBodies:
+    publishEventRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/event'
+
+  responses:
+    healthCheckResponse:
+      description: success health check
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: service name
+                example: consumer
+              version:
+                type: string
+                description: service version
+                example: v20200619-4
+              build_time:
+                type: string
+                description: service build time
+                example: "2020-06-19T09:11:43Z"
+              uptime:
+                type: string
+                description: service uptime
+                example: "18h57m32.728442288s"
+
+    publishEventResponse:
+      description: publish event successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message_id:
+                type: string
+                format: uuid
+                example: 'f1722184-839b-4b46-9032-1b326088a499'

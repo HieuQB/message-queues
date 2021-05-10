@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    container_name: rabbitmq
+    volumes:
+      - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+volumes:
+  rabbitmq_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./rabbitmq_data
+networks:
+  finan_network:
+    external:
+      name: finan_network
+
