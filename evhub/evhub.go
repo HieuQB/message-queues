@@ -2,10 +2,12 @@ package evhub
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/micro/go-micro/v2/broker"
+	log "github.com/sirupsen/logrus"
 	consumerPb "ms-consumer/proto/consumer"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -46,7 +48,7 @@ func (e *evhub) PublishEvent(ctx context.Context, req *consumerPb.PublishEventRe
 	}
 
 	message.Header["x-message-id"] = req.GetMessageId()
-	message.Body = []byte(req.GetBody())
+	message.Body, _ = json.Marshal(req.GetBody())
 
 	err := e.br.Publish(req.GetTopic(), message)
 	if err != nil {
@@ -76,7 +78,7 @@ func (e *evhub) HttpHandler(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-
+	log.Info(log.WithField("request", req))
 	c.JSON(http.StatusCreated, resp)
 }
 

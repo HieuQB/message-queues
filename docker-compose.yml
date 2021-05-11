@@ -2,7 +2,7 @@ version: "3"
 services:
   ms-consumer:
     image: golang:1.14
-    command: ["go", "run", "main.go"]
+    command: ["go", "run", "cmd/main.go"]
     working_dir: /ms-consumer
     restart: always
     volumes:

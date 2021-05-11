@@ -15,7 +15,10 @@ services:
       - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
     environment:
       RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_PASS: XJT3XwLWQk3SxC3K
+    networks:
+      - finan_network
+
 volumes:
   rabbitmq_data:
     driver: local
@@ -23,6 +26,7 @@ volumes:
       o: bind
       type: none
       device: ./rabbitmq_data
+
 networks:
   finan_network:
     external:

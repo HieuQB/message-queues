@@ -21,7 +21,7 @@ type ServicesConsumers struct {
 
 // AppConfig ...
 type AppConfig struct {
-	HttpPort         int    `env:"HTTP_PORT" envDefault:"8080"`
+	HttpPort         int    `env:"HTTP_PORT" envDefault:"80"`
 	BrokerURL        string `env:"BROKER_URL" envDefault:"amqp://admin:admin@localhost:5672/"`
 	ServicesYamlPath string `env:"SERVICES_YAML_PATH" envDefault:"config/config.yml"`
 

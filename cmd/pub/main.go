@@ -18,7 +18,7 @@ type echoMessage struct {
 func main() {
 	brokerURL := os.Getenv("BROKER_URL")
 	if brokerURL == "" {
-		brokerURL = "amqp://admin:admin@localhost:5672/"
+		brokerURL = "amqp://admin:admin@rabbitmq:5672/"
 	}
 
 	topic := os.Getenv("TOPIC")

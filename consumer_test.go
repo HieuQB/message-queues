@@ -50,7 +50,7 @@ func (ts *consumerTestSuite) SetupTest() {
 		return ts.mockBroker
 	}
 
-	ts.url = "amqp://admin:admin@localhost:5672/"
+	ts.url = "amqp://admin:admin@rabbitmq:5672/"
 
 	ts.cmer = NewConsumer(ts.url)
 }

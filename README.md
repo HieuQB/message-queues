@@ -22,6 +22,23 @@ The gRPC should be available at `http://consumer:55051`.
 This is an easy way, but it'll spend more resource, as you already know the way of Restful works, compares to gRPC.
 For the endpoint and payload, you could prefer swagger
 
+Example: 
+curl --location --request POST 'localhost:80/events' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "topic": "TEST",
+  "body": ```"{\"name\":\"john\",\"age\":22,\"class\":\"mca\"}"```
+}'
+
+### Body request in des source (consumer)
+struct sample : 	
+	``` 
+	ConsumerRequest struct { 
+		Topic string `json:"topic"` 
+		Payload string `json:"payload"` 
+	} 
+	```
+
 ## Consume events
 
 This is consumer primary responsibility. It helps to deliver events what were published from above step to target services

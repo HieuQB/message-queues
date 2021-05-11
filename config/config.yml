@@ -1,9 +1,8 @@
 services:
-  - service_id: ms-user-management
-    grpc_addr: ms-user:8082
-    url: http://ms-user-management/api/consumer
+  - service_id: localhost:8089
+    url: http://localhost:8089/api/consumer
     listeners:
-      - topic: user.craete
-        queue: ms-user:user.create
-      - topic: user.update
-        queue: ms-user:user.update
+      - topic: TEST3
+        queue: ms-user:TEST3
+      - topic: TEST4
+        queue: ms-user:TEST4
